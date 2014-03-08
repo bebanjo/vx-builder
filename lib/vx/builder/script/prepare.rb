@@ -16,6 +16,10 @@ module Vx
           repo_path    = "${VX_ROOT}/code/#{name}"
           data_path    = "${VX_ROOT}/data/#{name}"
           key_file     = "#{data_path}/key"
+
+          org_key      = "${VX_ROOT}/.ssh/id_rsa" # Organization key on the workers machines or the docker images
+          key_file     = org_key if org_key
+
           git_ssh_file = "#{data_path}/git_ssh"
 
           sha          = env.task.sha
@@ -29,8 +33,10 @@ module Vx
             i << "mkdir -p #{repo_path}"
 
             if deploy_key
-              i << upload_sh_command(key_file, deploy_key)
-              i << "chmod 0600 #{key_file}"
+              unless org_key
+                i << upload_sh_command(key_file, deploy_key)
+                i << "chmod 0600 #{key_file}"
+              end
               i << "export VX_PRIVATE_KEY=#{key_file}"
             end
 
