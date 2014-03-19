@@ -97,6 +97,15 @@ describe Vx::Builder::BuildConfiguration do
       its(:directories) { should eq [] }
       its(:enabled?)    { should be_false }
     end
+
+    context "when disabled with normalized attributes" do
+      let(:content) { { "cache" => {
+        "directories" => [],
+        "enabled" => false
+      } } }
+      its(:directories) { should eq [] }
+      its(:enabled?)    { should be_false }
+    end
   end
 
   context "artifacts" do

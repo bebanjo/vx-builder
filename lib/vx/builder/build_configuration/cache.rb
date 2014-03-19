@@ -31,7 +31,7 @@ module Vx
               when Hash
                 {
                   "directories" => Array(new_cache["directories"]).flatten.map(&:to_s),
-                  "enabled"     => true,
+                  "enabled"     => new_cache.key?("enabled") ? new_cache["enabled"] : true,
                 }
               else
                 {
