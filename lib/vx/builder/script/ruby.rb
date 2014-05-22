@@ -28,6 +28,8 @@ module Vx
 
             env.install.tap do |i|
               bundler_args = env.source.bundler_args.first
+              i << "mkdir -p ~/.rubygems"
+              i << "if [ -d ~/cache/${PWD}/#{ruby env}/.rubygems ]; then rsync -a ~/cache/${PWD}/#{ruby env}/.rubygems/ ~/.rubygems/ ; fi"
               i << trace_sh_command("bundle install #{bundler_args}")
               i << trace_sh_command("bundle clean --force")
             end
@@ -40,6 +42,9 @@ module Vx
             if env.source.cached_directories != false
               env.cached_directories.push "~/.rubygems"
             end
+
+            env.after_script << "mkdir -p ~/cache/${PWD}/#{ruby env}/.rubygems"
+            env.after_script << "rsync -a ~/.rubygems/ ~/cache/${PWD}/#{ruby env}/.rubygems/"
           end
 
           app.call(env)
