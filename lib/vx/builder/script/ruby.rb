@@ -44,7 +44,7 @@ module Vx
             end
 
             env.after_script << "mkdir -p ~/cache/${PWD}/#{ruby env}/.rubygems"
-            env.after_script << "rsync -a ~/.rubygems/ ~/cache/${PWD}/#{ruby env}/.rubygems/"
+            env.after_script << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache/${PWD}/#{ruby env}/.rubygems/ ; fi"
           end
 
           app.call(env)
