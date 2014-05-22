@@ -17,7 +17,7 @@ module Vx
               i << 'eval "$(rbenv init -)" || true'
               i << "rbenv shell #{make_rbenv_version_command env}"
               i << trace_sh_command("export BUNDLE_GEMFILE=${PWD}/#{gemfile(env)}")
-              i << trace_sh_command("export GEM_HOME=~/cache/#{ruby env}/.rubygems")
+              i << trace_sh_command("export GEM_HOME=~/.rubygems")
             end
 
             env.announce.tap do |a|
@@ -37,9 +37,8 @@ module Vx
               env.script << script
             end
 
-            # We need to change the default for bebanjo projects
             if env.source.cached_directories != false
-              env.cached_directories.push "~/cache//#{ruby env}/.rubygems"
+              env.cached_directories.push "~/.rubygems"
             end
           end
 
