@@ -32,6 +32,8 @@ module Vx
               i << "if [ -d ~/cache/${PWD}/#{ruby env}/.rubygems ]; then rsync -a ~/cache/${PWD}/#{ruby env}/.rubygems/ ~/.rubygems/ ; fi"
               i << trace_sh_command("bundle install #{bundler_args}")
               i << trace_sh_command("bundle clean --force")
+              i << "mkdir -p ~/cache/${PWD}/#{ruby env}/.rubygems"
+              i << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache/${PWD}/#{ruby env}/.rubygems/ ; fi"
             end
 
             do_script(env) do |i|
@@ -42,9 +44,6 @@ module Vx
             do_cached_directories(env) do |i|
               i << "~/.rubygems"
             end
-
-            env.after_script << "mkdir -p ~/cache/${PWD}/#{ruby env}/.rubygems"
-            env.after_script << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache/${PWD}/#{ruby env}/.rubygems/ ; fi"
           end
 
           app.call(env)
