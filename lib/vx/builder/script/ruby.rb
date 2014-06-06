@@ -27,15 +27,9 @@ module Vx
             end
 
             do_install(env) do |i|
-              i << "mkdir -p ~/.rubygems"
-              i << "if [ -d ~/cache${PWD}/#{ruby env}/.rubygems ]; then rsync -a ~/cache${PWD}/#{ruby env}/.rubygems/ ~/.rubygems/ ; fi"
-
               bundler_args = env.source.bundler_args.first
               i << trace_sh_command("bundle install #{bundler_args}")
               i << trace_sh_command("bundle clean --force")
-
-              i << trace_sh_command("mkdir -p ~/cache${PWD}/#{ruby env}/.rubygems")
-              i << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache${PWD}/#{ruby env}/.rubygems/ ; fi"
             end
 
             do_script(env) do |i|
@@ -80,6 +74,15 @@ module Vx
             }.gsub(/\n/, ' ').gsub(/ +/, ' ').strip
           end
 
+          def do_install(env)
+            env.install << "mkdir -p ~/.rubygems"
+            env.install << "if [ -d ~/cache${PWD}/#{ruby env}/.rubygems ]; then rsync -a ~/cache${PWD}/#{ruby env}/.rubygems/ ~/.rubygems/ ; fi"
+
+            super(env)
+
+            env.install << trace_sh_command("mkdir -p ~/cache${PWD}/#{ruby env}/.rubygems")
+            env.install << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache${PWD}/#{ruby env}/.rubygems/ ; fi"
+          end
       end
     end
   end
