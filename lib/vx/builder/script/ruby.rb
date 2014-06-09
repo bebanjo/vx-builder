@@ -75,13 +75,15 @@ module Vx
           end
 
           def do_install(env)
+            cache_scope = "#{env.task.name}/#{ruby(env)}"
+
             env.install << "mkdir -p ~/.rubygems"
-            env.install << "if [ -d ~/cache${PWD}/#{ruby env}/.rubygems ]; then rsync -a ~/cache${PWD}/#{ruby env}/.rubygems/ ~/.rubygems/ ; fi"
+            env.install << "if [ -d ~/cache/#{cache_scope}/.rubygems ]; then rsync -a ~/cache/#{cache_scope}/.rubygems/ ~/.rubygems/ ; fi"
 
             super(env)
 
-            env.install << trace_sh_command("if [ -d ~/cache${PWD}/#{ruby env}/.rubygems ];  then mkdir -p ~/cache${PWD}/#{ruby env}/.rubygems; fi")
-            env.install << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache${PWD}/#{ruby env}/.rubygems/ ; fi"
+            env.install << trace_sh_command("if [ ! -d ~/cache/#{cache_scope}/.rubygems ]; then mkdir -p ~/cache/#{cache_scope}/.rubygems; fi")
+            env.install << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache/#{cache_scope}/.rubygems/ ; fi"
           end
       end
     end
