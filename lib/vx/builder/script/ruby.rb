@@ -80,7 +80,7 @@ module Vx
 
             super(env)
 
-            env.install << trace_sh_command("mkdir -p ~/cache${PWD}/#{ruby env}/.rubygems")
+            env.install << trace_sh_command("if [ -d ~/cache${PWD}/#{ruby env}/.rubygems ];  then mkdir -p ~/cache${PWD}/#{ruby env}/.rubygems; fi")
             env.install << "if [ -d ~/.rubygems ]; then rsync -a ~/.rubygems/ ~/cache${PWD}/#{ruby env}/.rubygems/ ; fi"
           end
       end
