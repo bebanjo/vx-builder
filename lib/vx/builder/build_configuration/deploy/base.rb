@@ -25,6 +25,10 @@ module Vx
             def detect(params)
               params.key?(key.to_s) if key
             end
+
+            def module_by_key(val)
+              loaded.find{|i| i.key.to_s == val.to_s }
+            end
           end
 
           attr_reader :params, :branch
@@ -39,7 +43,10 @@ module Vx
           end
 
           def branch?(name)
-            if branch.empty?
+            case
+            when branch.empty?
+              true
+            when !name
               true
             else
               branch.include?(name)
@@ -48,7 +55,15 @@ module Vx
 
           def key
             if self.class.key
-              Array(params[self.class.key.to_s])
+              @key ||= Array(params[self.class.key.to_s])
+            end
+          end
+
+          def to_hash
+            if key
+              { self.class.key.to_s => key }
+            else
+              {}
             end
           end
 

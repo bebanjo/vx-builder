@@ -8,6 +8,14 @@ module Vx
   module Builder
     class BuildConfiguration
 
+      REQUIRED_KEYS = %w{
+        rvm
+        scala
+        jdk
+        language
+        script
+      }
+
       ATTRIBUTES = %w{
         rvm
         scala
@@ -46,14 +54,26 @@ module Vx
       def initialize(new_attributes = {}, matrix_attributes = {})
         new_attributes = {} unless new_attributes.is_a?(Hash)
 
-        @env            = Env.new       new_attributes.delete("env")
-        @cache          = Cache.new     new_attributes.delete("cache")
-        @deploy         = Deploy.new    new_attributes.delete("deploy")
-        @deploy_modules = new_attributes.delete("deploy_modules") || []
+        @env               = Env.new       new_attributes.delete("env")
+        @cache             = Cache.new     new_attributes.delete("cache")
+        @deploy            = Deploy.new    new_attributes.delete("deploy")
+        @deploy_modules    = new_attributes.delete("deploy_modules") || []
+        @deploy_modules    = Deploy.restore_modules(@deploy_modules)
 
         @matrix_attributes = matrix_attributes
 
         build_attributes new_attributes
+      end
+
+      def any?
+        REQUIRED_KEYS.any? do |key|
+          attributes[key].any?
+        end
+      end
+
+      # for deploy builder
+      def flat_matrix_attributes
+        @matrix_attributes
       end
 
       def matrix_attributes
@@ -83,9 +103,12 @@ module Vx
       end
 
       def to_hash
-        attributes.merge("env"    => env.attributes)
-                  .merge("cache"  => cache.attributes)
-                  .merge("deploy" => deploy.attributes)
+        attributes.merge(
+          "env"            => env.attributes,
+          "cache"          => cache.attributes,
+          "deploy"         => deploy.attributes,
+          "deploy_modules" => deploy_modules.map(&:to_hash)
+        )
       end
 
       def to_yaml

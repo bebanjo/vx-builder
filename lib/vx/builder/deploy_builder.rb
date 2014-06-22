@@ -7,19 +7,20 @@ module Vx
         before_script
         after_success
         script
+        deploy_modules
       }
 
       attr_reader :base_build_configuration, :matrix_build_configuration, :branch
 
       def initialize(matrix_builder, options = {})
         @base_build_configuration    = matrix_builder.build_configuration
-        @matrix_build_configuration  = matrix_builder.build.first
+        @matrix_build_configuration  = matrix_builder.build.first || matrix_builder.build_configuration
         @branch                      = options[:branch]
       end
 
       def build
         @build ||= begin
-          return false unless valid?
+          return [] unless valid?
 
           hash = matrix_build_configuration.to_hash
 
@@ -28,13 +29,20 @@ module Vx
           end
 
           hash["env"]["matrix"] = []
-
-          BuildConfiguration.new(
-            hash.merge(
-              "deploy_modules" => deploy_modules,
-              "deploy"         => nil
-            )
+          hash.merge!(
+            "deploy_modules" => deploy_modules.map(&:to_hash),
+            "deploy"         => nil
           )
+
+          matrix_hash = matrix_build_configuration.flat_matrix_attributes
+          (BLACK_LIST + %w{ env }).each do |key|
+            matrix_hash.delete(key)
+          end
+
+          build_configuration = BuildConfiguration.new(
+            hash, matrix_hash
+          )
+          [build_configuration]
         end
       end
 

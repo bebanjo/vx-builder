@@ -8,6 +8,7 @@ describe Vx::Builder::BuildConfiguration::Deploy::Base do
   subject { described_class.new params }
 
   context "#branch" do
+
     it "should be empty if key 'branch' is not exists" do
       expect(get_branch nil).to eq []
     end
@@ -28,6 +29,13 @@ describe Vx::Builder::BuildConfiguration::Deploy::Base do
   context ".loaded" do
     subject { described_class.loaded }
     it { should have(1).items }
+  end
+
+  context ".module_by_key" do
+    it "should find modules" do
+      expect(described_class.module_by_key :shell).to eq Vx::Builder::BuildConfiguration::Deploy::Shell
+      expect(described_class.module_by_key :not_shell).to be_nil
+    end
   end
 
 end
