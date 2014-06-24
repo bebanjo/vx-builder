@@ -18,9 +18,9 @@ module Vx
 
       def build
         @build ||= begin
-          new_attributes = build_configuration.to_hash.dup
+          original_attributes = build_configuration.to_hash.dup
           build_configurations = attributes_for_new_build_configurations_with_merged_env.map do |matrix_attributes|
-            new_attributes.merge!(matrix_attributes)
+            new_attributes = original_attributes.merge(matrix_attributes)
             BuildConfiguration.new new_attributes, matrix_attributes
           end
           build_configurations.select{|bc| bc.any? }

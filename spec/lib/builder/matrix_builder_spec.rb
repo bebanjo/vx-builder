@@ -9,6 +9,7 @@ describe Vx::Builder::MatrixBuilder do
     "before_script"  => "echo before_script",
     "before_install" => "echo before_install",
     "script"         => "echo script",
+    "cache"          => false
   } }
   let(:config) { Vx::Builder::BuildConfiguration.new attributes }
   let(:matrix) { described_class.new config }
@@ -50,6 +51,10 @@ describe Vx::Builder::MatrixBuilder do
 
     it "should assign matrix_attributes" do
       expect(subject.map(&:matrix_attributes).flatten).to have(12).items
+    end
+
+    it "should respect cache false" do
+      expect(subject.map(&:cached_directories).flatten).to eq [false] * 12
     end
 
     context "when empty configuration" do
