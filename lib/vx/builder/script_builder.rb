@@ -7,16 +7,17 @@ module Vx
       autoload :Base,         File.expand_path("../script_builder/base",      __FILE__)
       autoload :Env,          File.expand_path("../script_builder/env",       __FILE__)
       autoload :Ruby,         File.expand_path("../script_builder/ruby",      __FILE__)
+      autoload :Go,           File.expand_path("../script_builder/go",        __FILE__)
       autoload :Java,         File.expand_path("../script_builder/java",      __FILE__)
       autoload :Scala,        File.expand_path("../script_builder/scala",     __FILE__)
       autoload :Clojure,      File.expand_path("../script_builder/clojure",   __FILE__)
-      autoload :Script,       File.expand_path("../script_builder/script",    __FILE__)
       autoload :Prepare,      File.expand_path("../script_builder/prepare",   __FILE__)
       autoload :Databases,    File.expand_path("../script_builder/databases", __FILE__)
       autoload :Cache,        File.expand_path("../script_builder/cache",     __FILE__)
       autoload :Services,     File.expand_path("../script_builder/services",  __FILE__)
       autoload :Deploy,       File.expand_path("../script_builder/deploy",    __FILE__)
       autoload :Timeouts,     File.expand_path("../script_builder/timeouts",  __FILE__)
+      autoload :Defaults,     File.expand_path("../script_builder/defaults",  __FILE__)
 
       include Common::Helper::Middlewares
 
@@ -26,12 +27,15 @@ module Vx
         use Builder::ScriptBuilder::Env
         use Builder::ScriptBuilder::Services
         use Builder::ScriptBuilder::Prepare
+
         use Builder::ScriptBuilder::Java
         use Builder::ScriptBuilder::Scala
         use Builder::ScriptBuilder::Clojure
         use Builder::ScriptBuilder::Ruby
+        use Builder::ScriptBuilder::Go
+
         use Builder::ScriptBuilder::Deploy
-        use Builder::ScriptBuilder::Script
+        use Builder::ScriptBuilder::Defaults
       end
 
       attr_reader :source, :task

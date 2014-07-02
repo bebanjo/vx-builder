@@ -1,0 +1,6 @@
+
+# script
+echo \$\ go\ test\ -v\ ./...
+go test -v ./...
+
+# after success

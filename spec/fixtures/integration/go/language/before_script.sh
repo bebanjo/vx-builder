@@ -35,33 +35,38 @@ cd ${VX_ROOT}/code/project/name
 echo "download latest version of vxvm"
 curl --fail --silent --show-error https://raw.githubusercontent.com/vexor/vx-packages/master/vxvm > $VX_ROOT/bin/vxvm
 chmod +x $VX_ROOT/bin/vxvm
- export CASHER_DIR=$HOME/.casher && ( mkdir -p $CASHER_DIR/bin && /usr/bin/curl https://raw2.github.com/dima-exe/casher/master/bin/casher -s -o $HOME/.casher/bin/casher && chmod +x $HOME/.casher/bin/casher ) || true 
-test -f $HOME/.casher/bin/casher && /opt/rbenv/versions/1.9.3-p547/bin/ruby $HOME/.casher/bin/casher fetch http://example.com/master/rvm-1.9.3-gemfile.tgz || true
-test -f $HOME/.casher/bin/casher && /opt/rbenv/versions/1.9.3-p547/bin/ruby $HOME/.casher/bin/casher add ~/.rubygems || true
-unset CASHER_DIR
 
 # before install
-eval "$(rbenv init -)" || true
-rbenv shell $(rbenv versions | sed -e 's/^*/ /' | awk '{print $1}' | grep -v 'system' | grep '1.9.3' | tail -n1)
-echo \$\ export\ BUNDLE_GEMFILE\=\$\{PWD\}/Gemfile
-export BUNDLE_GEMFILE=${PWD}/Gemfile
-echo \$\ export\ GEM_HOME\=\~/.rubygems
-export GEM_HOME=~/.rubygems
+echo \$\ sudo\ vxvm\ install\ go\ 1.2
+VX_VM_SOURCE="$(sudo vxvm install go 1.2)"
+source "$VX_VM_SOURCE"
+echo \$\ export\ VX_GOPATH\=\$VX_ROOT/gopath:\$GOPATH
+export VX_GOPATH=$VX_ROOT/gopath:$GOPATH
+echo \$\ export\ PATH\=\$VX_GOPATH/bin:\$PATH
+export PATH=$VX_GOPATH/bin:$PATH
+echo \$\ export\ VX_ORIG_CODE_ROOT\=\$\(pwd\)
+export VX_ORIG_CODE_ROOT=$(pwd)
+echo \$\ export\ VX_NEW_CODE_ROOT\=\$VX_GOPATH/src/github.com/project/name
+export VX_NEW_CODE_ROOT=$VX_GOPATH/src/github.com/project/name
+echo \$\ mkdir\ -p\ \$VX_NEW_CODE_ROOT
+mkdir -p $VX_NEW_CODE_ROOT
+echo \$\ rmdir\ \$VX_NEW_CODE_ROOT
+rmdir $VX_NEW_CODE_ROOT
+echo \$\ mv\ \$VX_ORIG_CODE_ROOT\ \$VX_NEW_CODE_ROOT
+mv $VX_ORIG_CODE_ROOT $VX_NEW_CODE_ROOT
+echo \$\ ln\ -s\ \$VX_NEW_CODE_ROOT\ \$VX_ORIG_CODE_ROOT
+ln -s $VX_NEW_CODE_ROOT $VX_ORIG_CODE_ROOT
+echo \$\ cd\ \$VX_NEW_CODE_ROOT
+cd $VX_NEW_CODE_ROOT
 
 # announce
-echo \$\ ruby\ --version
-ruby --version
-echo \$\ gem\ --version
-gem --version
-echo \$\ bundle\ --version
-bundle --version
+echo \$\ go\ version
+go version
+echo \$\ go\ env
+go env
 
 # install
-echo \$\ bundle\ install\ 
-bundle install 
-echo \$\ bundle\ clean\ --force
-bundle clean --force
+echo \$\ go\ get\ -v\ ./...
+go get -v ./...
 
 # before script
-echo \$\ echo\ before\ script
-echo before script

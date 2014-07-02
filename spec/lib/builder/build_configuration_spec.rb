@@ -26,6 +26,7 @@ describe Vx::Builder::BuildConfiguration do
       {
        "after_success"  => ["echo after success"],
        "before_install" => ["echo before_install"],
+       "install"        => ["echo install"],
        "before_script"  => ["echo before_script"],
        "cache" => {
          "directories"  => ["~/.cache"],
@@ -39,6 +40,7 @@ describe Vx::Builder::BuildConfiguration do
        "image"          => ["one", "two"],
        "jdk"            => ['openjdk7'],
        "language"       => ["ruby"],
+       "go"             => ['1.2.2'],
        "rvm"            => ["2.0.0"],
        "scala"          => ['2.10.3'],
        "script"         => ["RAILS_ENV=test ls -1 && echo DONE!"],

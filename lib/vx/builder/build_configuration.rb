@@ -12,6 +12,7 @@ module Vx
         rvm
         scala
         jdk
+        go
         language
         script
       }
@@ -20,6 +21,7 @@ module Vx
         rvm
         scala
         jdk
+        go
         language
 
         gemfile
@@ -28,6 +30,7 @@ module Vx
         bundler_args
 
         before_install
+        install
         before_script
         script
         after_success
