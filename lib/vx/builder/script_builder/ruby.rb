@@ -9,7 +9,7 @@ module Vx
         def call(env)
           if enabled?(env)
 
-            vxvm_install(env, 'ruby', ruby_version(env))
+            #vxvm_install(env, 'ruby', ruby_version(env))
 
             do_cache_key(env) do |i|
               i << "rvm-#{ruby_version env}"
@@ -17,6 +17,9 @@ module Vx
             end
 
             do_before_install(env) do |i|
+              i << 'eval "$(rbenv init -)" || true'
+              i << "rbenv shell #{make_rbenv_version_command env}"
+
               i << trace_sh_command("export BUNDLE_GEMFILE=${PWD}/#{gemfile(env)}")
               i << trace_sh_command('export GEM_HOME=~/.rubygems')
             end
@@ -58,6 +61,21 @@ module Vx
 
           def gemfile(env)
             env.source.gemfile.first || "Gemfile"
+          end
+
+          def make_rbenv_version_command(env)
+            select_rbenv_version(env)
+          end
+
+          def select_rbenv_version(env)
+            %{
+               $(rbenv versions |
+                sed -e 's/^\*/ /' |
+                awk '{print $1}' |
+                grep -v 'system' |
+                grep '#{ruby_version env}' |
+                tail -n1)
+            }.gsub(/\n/, ' ').gsub(/ +/, ' ').strip
           end
 
         # FIXME for the moment don't use custom gem caching
