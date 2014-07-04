@@ -13,6 +13,9 @@ module Vx
         scala
         jdk
         go
+        node_js
+        rust
+
         language
         script
       }
@@ -22,8 +25,10 @@ module Vx
         scala
         jdk
         go
-        language
+        node_js
+        rust
 
+        language
         gemfile
         services
         image

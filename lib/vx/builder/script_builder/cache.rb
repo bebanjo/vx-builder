@@ -13,6 +13,7 @@ module Vx
           rs = app.call env
 
           if env.task.cache_url_prefix && enabled?(env)
+
             assign_url_to_env(env)
             prepare(env)
             fetch(env)
@@ -26,7 +27,7 @@ module Vx
         private
 
           def enabled?(env)
-            !env.cached_directories.empty?
+            env.source.cache.enabled? && !env.cached_directories.empty?
           end
 
           def casher_cmd
@@ -63,7 +64,7 @@ module Vx
             cmd = %{
               export CASHER_DIR=$HOME/.casher &&
               ( mkdir -p $CASHER_DIR/bin &&
-                /usr/bin/curl #{CASHER_URL} -s -o #{CASHER_BIN} &&
+                /usr/bin/curl #{CASHER_URL} --tcp-nodelay --retry 3 --fail --silent --show-error -o #{CASHER_BIN} &&
                 chmod +x #{CASHER_BIN} ) ||
               true
             }.gsub(/\n/, ' ').gsub(/ +/, ' ')

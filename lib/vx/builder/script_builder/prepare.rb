@@ -46,7 +46,7 @@ module Vx
             i << "chmod 0750 #{git_ssh_file}"
 
             i << "export GIT_SSH=#{git_ssh_file}"
-            i << scm.fetch_cmd
+            i << "#{scm.fetch_cmd} || exit 1"
             i << "unset GIT_SSH"
 
             i << 'echo "starting SSH Agent"'
@@ -56,7 +56,7 @@ module Vx
             i << "cd #{repo_path}"
 
             i << 'echo "download latest version of vxvm"'
-            i << "curl --fail --silent --show-error https://raw.githubusercontent.com/vexor/vx-packages/master/vxvm > $VX_ROOT/bin/vxvm"
+            i << "curl --tcp-nodelay --retry 3 --fail --silent --show-error -o $VX_ROOT/bin/vxvm https://raw.githubusercontent.com/vexor/vx-packages/master/vxvm"
             i << "chmod +x $VX_ROOT/bin/vxvm"
           end
 
