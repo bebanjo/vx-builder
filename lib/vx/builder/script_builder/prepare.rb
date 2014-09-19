@@ -3,6 +3,7 @@ require 'vx/common'
 module Vx
   module Builder
     class ScriptBuilder
+      TEMPLATES_PATH = File.expand_path('../templates', __FILE__)
 
       Prepare = Struct.new(:app) do
 
@@ -27,6 +28,10 @@ module Vx
             i << 'export VX_ROOT=$(pwd)'
             i << 'export PATH=$VX_ROOT/bin:$PATH'
 
+            i << File.read(File.expand_path('header.sh', TEMPLATES_PATH))
+          end
+
+          env.init.tap do |i|
             i << "mkdir -p $VX_ROOT/bin"
             i << "mkdir -p #{data_path}"
             i << "mkdir -p #{repo_path}"
@@ -48,7 +53,7 @@ module Vx
             i << "chmod 0750 #{git_ssh_file}"
 
             i << "export GIT_SSH=#{git_ssh_file}"
-            i << "#{scm.fetch_cmd} || exit 1"
+            i << scm.fetch_cmd
             i << "unset GIT_SSH"
 
             i << 'echo "starting SSH Agent"'
