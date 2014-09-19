@@ -12,7 +12,6 @@ module Vx
 
     module Helper
       autoload :Config,         File.expand_path("../builder/helper/config",           __FILE__)
-      autoload :TraceShCommand, File.expand_path("../builder/helper/trace_sh_command", __FILE__)
       autoload :VxvmInstall,    File.expand_path("../builder/helper/vxvm_install",     __FILE__)
     end
 

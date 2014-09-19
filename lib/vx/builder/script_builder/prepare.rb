@@ -6,7 +6,7 @@ module Vx
 
       Prepare = Struct.new(:app) do
 
-        include Helper::TraceShCommand
+        include Common::Helper::TraceShCommand
         include Common::Helper::UploadShCommand
 
         def call(env)

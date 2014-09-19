@@ -4,8 +4,8 @@ module Vx
 
       Base = Struct.new(:app) do
 
-        include Helper::TraceShCommand
         include Common::Helper::UploadShCommand
+        include Common::Helper::TraceShCommand
         include Helper::VxvmInstall
 
         def do_cache_key(env)

@@ -36,12 +36,12 @@ module Vx
             end
 
             do_install(env) do |i|
-              bundler_args = env.source.bundler_args.first || DEFAULT_BUNDLE_INSTALL_ARGS
-              i << trace_sh_command("bundle install #{bundler_args}")
+              bundler_args = env.source.bundler_args.first ||  DEFAULT_BUNDLE_INSTALL_ARGS
+              i << trace_sh_command("bundle install #{bundler_args}", {fold: 'install.bundler', retry: true, timing: true})
             end
 
             do_script(env) do |i|
-              script = "if [ -f Rakefile ] ; then \n #{trace_sh_command "bundle exec rake"}\nfi"
+              script = "if [ -f Rakefile ] ; then \n #{trace_sh_command("bundle exec rake", timing: true)}\nfi"
               i << script
             end
 
