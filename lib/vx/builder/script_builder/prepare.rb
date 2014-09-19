@@ -57,9 +57,10 @@ module Vx
 
             i << "cd #{repo_path}"
 
-            i << 'echo "download latest version of vxvm"'
-            i << "curl --tcp-nodelay --retry 3 --fail --silent --show-error -o $VX_ROOT/bin/vxvm https://raw.githubusercontent.com/vexor/vx-packages/master/vxvm"
-            i << "chmod +x $VX_ROOT/bin/vxvm"
+            # At BeBanjo we're not using vxvm
+            #i << 'echo "download latest version of vxvm"'
+            #i << "curl --tcp-nodelay --retry 3 --fail --silent --show-error -o $VX_ROOT/bin/vxvm https://raw.githubusercontent.com/vexor/vx-packages/master/vxvm"
+            #i << "chmod +x $VX_ROOT/bin/vxvm"
           end
 
           env.after_script_init.tap do |i|
