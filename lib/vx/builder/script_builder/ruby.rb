@@ -4,7 +4,7 @@ module Vx
 
       class Ruby < Base
 
-        DEFAULT_RUBY = '2.0.0'
+        DEFAULT_RUBY = '1.9.3'
         DEFAULT_BUNDLE_INSTALL_ARGS = "--clean --retry=3 --jobs=4"
 
         ALIASES = {
