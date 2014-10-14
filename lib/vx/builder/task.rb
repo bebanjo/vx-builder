@@ -1,11 +1,9 @@
 module Vx
   module Builder
     class Task
-      # org_key so with a single key is possible to access to more than one repository should be on the docker images
-
       attr_reader :name, :src, :sha, :deploy_key, :branch, :pull_request_id,
         :cache_url_prefix, :job_id, :build_id, :build_number, :job_number,
-        :project_host, :org_key
+        :project_host
 
       def initialize(options = {})
         @name                 = options[:name]
@@ -20,7 +18,6 @@ module Vx
         @build_number         = options[:build_number]
         @job_number           = options[:job_number]
         @project_host         = options[:project_host]
-        @org_key              = options[:org_key]
 
         validate!
       end

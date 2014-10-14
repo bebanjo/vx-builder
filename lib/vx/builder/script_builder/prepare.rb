@@ -15,7 +15,7 @@ module Vx
 
           repo_path    = "${VX_ROOT}/code/#{name}"
           data_path    = "${VX_ROOT}/data/#{name}"
-          key_file     = env.task.org_key ? "${VX_ROOT}/.ssh/id_rsa" : "#{data_path}/key"
+          key_file     = env.organization_key ? "${VX_ROOT}/.ssh/id_rsa" : "#{data_path}/key"
 
           git_ssh_file = "#{data_path}/git_ssh"
 

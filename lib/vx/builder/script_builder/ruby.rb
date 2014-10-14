@@ -74,7 +74,7 @@ module Vx
         private
 
           def auto_build?(env)
-            return false if env.task.org_key # BeBanjo disable auto-build feature
+            return false if env.organization_key # BeBanjo disable auto-build feature
             env.source.empty?
           end
 
@@ -107,7 +107,7 @@ module Vx
           end
 
           def rbenv_init_shell(env, script)
-            if env.task.org_key
+            if env.organization_key
               script << 'eval "$(rbenv init -)" || true'
               script << "rbenv shell #{make_rbenv_version_command env}"
             end

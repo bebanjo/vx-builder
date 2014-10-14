@@ -1,0 +1,27 @@
+language: ruby
+cache:
+  directories:
+    - ~/.rubygems-depedencies
+env:
+  - PROJECT=dependencies
+  - PROJECT=frontend
+  #- PROJECT=backend CI_JOB_GROUP=1,6
+  #- PROJECT=backend CI_JOB_GROUP=2,6
+  #- PROJECT=backend CI_JOB_GROUP=3,6
+  #- PROJECT=backend CI_JOB_GROUP=4,6
+  #- PROJECT=backend CI_JOB_GROUP=5,6
+  #- PROJECT=backend CI_JOB_GROUP=6,6
+rvm:
+  - ree
+bundler_args: '--local --no-cache'
+before_script:
+  - export RUBY_HEAP_MIN_SLOTS=1000000
+  - export RUBY_HEAP_SLOTS_INCREMENT=1000000
+  - export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
+  - export RUBY_GC_MALLOC_LIMIT=1000000000
+  - export RUBY_HEAP_FREE_MIN=500000
+  - export RUBY_FREE_MIN=$RUBY_HEAP_FREE_MIN
+  - "for i in config/*.example; do cp \"$i\" \"${i/.example}\"; done"
+  - bundle exec rake db:create:all db:schema:load
+  - "[ ! -z $CI_JOB_GROUP ] && export SPEC=$(./script/ci_prepare_tests_list --specs)"
+script: bundle exec rake vexor_ci:${PROJECT}

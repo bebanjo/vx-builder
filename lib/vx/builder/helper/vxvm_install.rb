@@ -6,7 +6,7 @@ module Vx
 
       module VxvmInstall
         def vxvm_install(env, lang, version)
-          return if env.task.org_key # BeBanjo thing
+          return if env.organization_key # BeBanjo thing
 
           vxvm_install = "sudo env PATH=$PATH vxvm install #{lang} #{version}"
           do_before_install(env) do |i|

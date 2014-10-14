@@ -21,6 +21,7 @@ module Vx
       autoload :Timeouts,     File.expand_path("../script_builder/timeouts",  __FILE__)
       autoload :Defaults,     File.expand_path("../script_builder/defaults",  __FILE__)
       autoload :Parallel,     File.expand_path("../script_builder/parallel",  __FILE__)
+      autoload :OrgKey,       File.expand_path("../script_builder/org_key",   __FILE__)
 
       include Common::Helper::Middlewares
 
@@ -28,6 +29,7 @@ module Vx
         use Builder::ScriptBuilder::Timeouts
         use Builder::ScriptBuilder::Cache
         use Builder::ScriptBuilder::Env
+        use Builder::ScriptBuilder::OrgKey
         use Builder::ScriptBuilder::Parallel
         use Builder::ScriptBuilder::Services
         use Builder::ScriptBuilder::Prepare

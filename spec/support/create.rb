@@ -19,6 +19,22 @@ def create(name, options = {})
       project_host:     'github.com'
     )
 
+  when :movida_task
+    Vx::Builder::Task.new(
+      job_id:           1,
+      build_id:         12,
+      name:             'bebanjo/movida',
+      src:              "git@github.com:bebanjo/movida.git",
+      sha:              options[:sha] || "dc3e136f81238b920afe075d3a179793e2b3ad07",
+      deploy_key:       fixture("vx_test_repo_insecure_key"),
+      branch:           options[:branch] || "stable",
+      cache_url_prefix: "https://vexor-web.bebanjo.net",
+      pull_request_id:  options[:pull_request_id],
+      job_number:       1,
+      build_number:     101,
+      project_host:     'github.com'
+    )
+
   when :source
     name = options[:name] || "travis.yml"
     Vx::Builder::BuildConfiguration.from_yaml(fixture(name))
