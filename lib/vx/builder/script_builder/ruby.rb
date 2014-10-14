@@ -75,7 +75,8 @@ module Vx
         private
 
           def auto_build?(env)
-            env.source.empty?
+            # env.source.empty?
+            false # BeBanjo disable auto-build feature
           end
 
           def enabled?(env)
