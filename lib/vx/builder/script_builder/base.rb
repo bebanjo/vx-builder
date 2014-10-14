@@ -5,6 +5,7 @@ module Vx
       Base = Struct.new(:app) do
 
         include Helper::TraceShCommand
+        include Common::Helper::UploadShCommand
         include Helper::VxvmInstall
 
         def do_cache_key(env)
@@ -21,6 +22,10 @@ module Vx
           if env.source.cached_directories != false
             yield env.cached_directories
           end
+        end
+
+        def do_init(env)
+          yield env.init
         end
 
         def do_announce(env)

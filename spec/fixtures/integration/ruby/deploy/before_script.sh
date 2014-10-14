@@ -21,6 +21,10 @@ export PATH=$VX_ROOT/bin:$PATH
 mkdir -p $VX_ROOT/bin
 mkdir -p ${VX_ROOT}/data/vexor/vx-test-repo
 mkdir -p ${VX_ROOT}/code/vexor/vx-test-repo
+(echo IyEvYmluL2Jhc2gKCmk9MApmaWxlcz0oKQoKQkxBQ0s9IlwwMzNbMzBtIgpSRUQ9IlwwMzNbMzFtIgpHUkVFTj0iXDAzM1szMm0iCllFTExPVz0iXDAzM1szM20iCkJMVUU9IlwwMzNbMzRtIgpQSU5LPSJcMDMzWzM1bSIKQ1lBTj0iXDAzM1szNm0iCldISVRFPSJcMDMzWzM3bSIKTk9STUFMPSJcMDMzWzA7MzltIgoKSk9CUz0ke0NJX1BBUkFMTEVMX0pPQlM6LTF9CkpPQl9OVU1CRVI9JHtDSV9QQVJBTExFTF9KT0JfTlVNQkVSOi0wfQoKZm9yIGZpbGUgaW4gJChmaW5kIC4vc3BlYyAtbmFtZSAiKl9zcGVjLnJiIiB8IHNvcnQpCmRvCiAgaWYgWyAkKCgkaSAlICRKT0JTKSkgLWVxICRKT0JfTlVNQkVSIF0KICB0aGVuCiAgICBmaWxlcys9IiAkZmlsZSIKICBmaQogICgoaSsrKSkKZG9uZQoKZWNobyAtZSAiJHtHUkVFTn1QYXJhbGxlbCBydW5uaW5nICQoKCR7Sk9CX05VTUJFUn0gKyAxKSkgb2YgJHtKT0JTfSAke05PUk1BTH0iCmVjaG8gImJ1bmRsZSBleGVjIHJzcGVjICRAICR7ZmlsZXNbQF19IgpleGVjIGJ1bmRsZSBleGVjIHJzcGVjICRAICR7ZmlsZXNbQF19Cg== | base64 --decode) > $(pwd)/bin/parallel_rspec
+chmod 0750 $(pwd)/bin/parallel_rspec
+(echo IyEvYmluL2Jhc2gKCmk9MApmaWxlcz0oKQoKQkxBQ0s9IlwwMzNbMzBtIgpSRUQ9IlwwMzNbMzFtIgpHUkVFTj0iXDAzM1szMm0iCllFTExPVz0iXDAzM1szM20iCkJMVUU9IlwwMzNbMzRtIgpQSU5LPSJcMDMzWzM1bSIKQ1lBTj0iXDAzM1szNm0iCldISVRFPSJcMDMzWzM3bSIKTk9STUFMPSJcMDMzWzA7MzltIgoKSk9CUz0ke0NJX1BBUkFMTEVMX0pPQlM6LTF9CkpPQl9OVU1CRVI9JHtDSV9QQVJBTExFTF9KT0JfTlVNQkVSOi0wfQoKZm9yIGZpbGUgaW4gJChmaW5kIC4vZmVhdHVyZXMgLW5hbWUgIiouZmVhdHVyZSIgfCBzb3J0KQpkbwogIGlmIFsgJCgoJGkgJSAkSk9CUykpIC1lcSAkSk9CX05VTUJFUiBdCiAgdGhlbgogICAgZmlsZXMrPSIgJGZpbGUiCiAgZmkKICAoKGkrKykpCmRvbmUKCmVjaG8gLWUgIiR7R1JFRU59UGFyYWxsZWwgcnVubmluZyAkKCgke0pPQl9OVU1CRVJ9ICsgMSkpIG9mICR7Sk9CU30gJHtOT1JNQUx9IgplY2hvICJidW5kbGUgZXhlYyBzcGluYWNoICRAICR7ZmlsZXNbQF19IgpleGVjIGJ1bmRsZSBleGVjIHNwaW5hY2ggJEAgJHtmaWxlc1tAXX0K | base64 --decode) > $(pwd)/bin/parallel_spinach
+chmod 0750 $(pwd)/bin/parallel_spinach
 (echo LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBcE1rYW0rbWh3Q2RDUWRxdHU3VTlwNVZSRm1rcmJpOUhhQTN2YWdwaE12eXJ5V3F4CkM5c1krYW44akNOUlVwZWx5ako4ZjZiNi9WNWg0V2NubHdwT3ZWR0duczRIT2JuWWo4OUdLb0JGK1FwVDI4bXAKQ01pMGt6SE5TV01SWmcvZDl4M0FmMmNESWdKaGdHS2RLTGhPYitTSjJpUnpLQTZ5d215TlRyVUI0dEpocGdKLwpQQTFsR2xZWGtHYWQyS1JBZmc3bVRjdVFycUxKNHFpMlhkZ0FIY3RJU045d1VkYkUxeDVIRlB5enVrd0t1QkFFCmg3bTZWVnJKenNrS05yQnN1T1ZTWnVRNnJ2OVRpcVdYVnBBWGdyV3ZLenRsZjNTTkF0dG1BQmI1ZDJ1UE9hMisKcmVDV0V6SGJXT0ZnTVFEUXNYc1MzcnFDM2Z6dzRWTUtSUXdYSVFJREFRQUJBb0lCQURnWk9wVFBrY0JmM1IrYwpPYjhJY1lmbXZtYzV3STVQVENqeGJZc1ZJNGYvR3VDRUVPZnZXKzVLMzI0NTY4cUpVK2lsRFZ0TDFuQ0JQQ05IClFlUWFuem0yVW5VbndLLzNRL0daWjlLNlBwZ00yd1djL28yOS9qT0tKZEFSQ1BCTkFJekxOU2hxUWxmR3BialcKV1podVBrMjdhTzY1ci9aNElvVXIvV05KSGU1QWt2NUZNZnNlQVoremxBSEEzMlFxTmdnT2VpdDY1R2lvMmNJdQpZREtJNU5yMWlpU3EzSk1mRVp2bWMvNVFlZFU5VTdESWVOV3dqaThwR3pGa0Y4eGh1NkV5OWhwR1IyVTdnRXFSCitkeVNud2k4K3Fhc3BvZjhyZ3VHZVNVWlZtb1RHbWZZVUVuejFacEpWYVFpQUJrYVZYd0FEYWhodmU4dGQxVHIKN2gxYitRMENnWUVBMXZEcDdPa2xXeXZGaWVQWXU0cmxubWpWS052NmtiVVVMdE9peDl5S1diQXBZNmxqcFloUwp5aWdpcVY2amlWb3JDMUNsY1hQV3BXc0hvc2QrcDZEUmFhME1pcUQyV0pQU1huZENvbUdSc09yQ2VPN0RyTFdsClVDUkhsMU9sY1JIY3V4U3FWREgrQ0NxVytOQzRKeFVLYzIyT3pJK2thS1RydWozczlYa2VmSU1DZ1lFQXhFTjYKQjd4QU5ZOWNlYjFYb2V2M1o3QVdJaExQUThHUFozS1NTbXoxWmRwMTFNTm91eFJKQnpEUzRrNjRRdjJuNDRKUApVK2tiWFNqdm5DeUlUQ2pUZXZESXNLeEh0TzB3T0xFd0I1TENCenBKVEVzandHWmNUUDBBT3Y2ZHF3SndMUHBtCnlzaVRyTEZCSDVTZFZzVE10OFVKRnhaMzNzRFdIWnZTbzBwMjFJc0NnWUI2ODhyTWs3Mmp2cEU4UkpMcERSWTIKbkg4NjVVTWJjSHNBSWw0ZWQrRElWMFlGMVpMRDBReVN5WXl5V0FteWUxcmVHUjdhbkVudnpCN05GZE0wcm9DOApNNXBWL3FlTW1kcWY0UmJEN280NXBzRGlEcXJ1TStaQnhzOFJHRzh1RStxeE5hd05oNTlxS25xOEVDRVhjaWpOClNLR0VFTE1halNTdkg5ZFp3QlFaWXdLQmdRQ2NCaGlJOWJzRjJVWm04WU10RW0zSVhFLzhIbi92R1gxcmU4V1kKclM0WkhxYjEwYkw4cG8rM3k3U2FmSUkzbjNkTWdsZVdHWWJMZExPbnNDOWFmRXBEUGhBTmc2Z3R5VEhBbi92Uwp5WFMrVWpQYkZ4RUE3MThKUlVoZG5mU3g4bXBERjMySVVCUTJBV1FJT3hrcDFhSDVwZ1luK0pDcTRScFd4MzJZCm1xWUZLUUtCZ1FDYkVzdllsZmVXSkRpK0NCSCt6aGZrZldJWTlTaXl1SEVVUWE0aE5iYVMvRGtETWdxTjU4Q3UKOGdYR1NmdEVpVGNMYXQwYTBQNnZlYWNnUEt1aEFIZTFLN2g4NCtSMHJFL2N2MVFUQnBXMzhSUWdhYkxzK2V4eQpqeUY1UjFOSEkvTFhzREJOYWlSMDVzclhkaVNadW1MMGF3WDdyaUM0RHpJazZaWllSZGJuYlE9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo= | base64 --decode) > ${VX_ROOT}/data/vexor/vx-test-repo/key
 chmod 0600 ${VX_ROOT}/data/vexor/vx-test-repo/key
 export VX_PRIVATE_KEY=${VX_ROOT}/data/vexor/vx-test-repo/key
@@ -40,14 +44,18 @@ echo "download latest version of vxvm"
 curl --tcp-nodelay --retry 3 --fail --silent --show-error -o $VX_ROOT/bin/vxvm https://raw.githubusercontent.com/vexor/vx-packages/master/vxvm
 chmod +x $VX_ROOT/bin/vxvm
  export CASHER_DIR=$HOME/.casher && ( mkdir -p $CASHER_DIR/bin && /usr/bin/curl https://raw2.github.com/dima-exe/casher/master/bin/casher --tcp-nodelay --retry 3 --fail --silent --show-error -o $HOME/.casher/bin/casher && chmod +x $HOME/.casher/bin/casher ) || true 
-test -f $HOME/.casher/bin/casher && casher-ruby $HOME/.casher/bin/casher fetch http://example.com/test/pull-request/rvm-1.9.3-gemfile.tgz http://example.com/master/rvm-1.9.3-gemfile.tgz || true
+test -f $HOME/.casher/bin/casher && casher-ruby $HOME/.casher/bin/casher fetch http://example.com/test/pull-request/rvm-2.0.0-gemfile.tgz http://example.com/master/rvm-2.0.0-gemfile.tgz || true
 test -f $HOME/.casher/bin/casher && casher-ruby $HOME/.casher/bin/casher add ~/.rubygems || true
 unset CASHER_DIR
 
 # before install
-echo \$\ sudo\ env\ PATH\=\$PATH\ vxvm\ install\ ruby\ 1.9.3
-VX_VM_SOURCE="$(sudo env PATH=$PATH vxvm install ruby 1.9.3)"
+echo \$\ sudo\ env\ PATH\=\$PATH\ vxvm\ install\ ruby\ 2.0.0
+VX_VM_SOURCE="$(sudo env PATH=$PATH vxvm install ruby 2.0.0)"
 source "$VX_VM_SOURCE"
+echo \$\ export\ RAILS_ENV\=test
+export RAILS_ENV=test
+echo \$\ export\ RACK_ENV\=test
+export RACK_ENV=test
 echo \$\ export\ BUNDLE_GEMFILE\=\$\{PWD\}/Gemfile
 export BUNDLE_GEMFILE=${PWD}/Gemfile
 echo \$\ export\ GEM_HOME\=\~/.rubygems
@@ -62,9 +70,7 @@ echo \$\ bundle\ --version
 bundle --version
 
 # install
-echo \$\ bundle\ install\ 
-bundle install 
-echo \$\ bundle\ clean\ --force
-bundle clean --force
+echo \$\ bundle\ install\ --clean\ --retry\=3\ --jobs\=4
+bundle install --clean --retry=3 --jobs=4
 
 # before script

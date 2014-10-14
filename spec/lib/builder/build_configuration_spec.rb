@@ -53,7 +53,9 @@ describe Vx::Builder::BuildConfiguration do
        "bundler_args"   => ["--without development"],
        "before_deploy"  => ["echo before deploy"],
        "after_deploy"   => ["echo after deploy"],
-       "matrix"         => {"exclude"=>[{"rvm"=>2.1}]}
+       "matrix"         => {"exclude"=>[{"rvm"=>2.1}]},
+       "parallel"       => [3],
+       "parallel_job_number" => []
       }
     ) }
   end
@@ -87,21 +89,34 @@ describe Vx::Builder::BuildConfiguration do
 
   context "any?" do
     subject { config.any? }
-    %w{ rvm scala jdk language script }.each do |required_key|
-      context "when key #{required_key} exists" do
-        let(:content) { {
-          required_key => "value"
-        } }
-        it { should be }
+
+    it "should be false when required keys" do
+      %w{ rvm scala jdk language script }.each do |required_key|
+        expect(described_class.new(required_key => "value")).to be_any
       end
     end
 
-    context "when required keys does not exists" do
-      let(:content) { {
-        "before_script" => "value",
-        "deploy"        => "value"
-      } }
-      it { should_not be }
+    it "should be false when no any required keys" do
+      expect(described_class.new("before_script" => "value", "deploy" => "value")).to_not be_any
     end
+  end
+
+  context "empty?" do
+    it "should be true if nil" do
+      expect(described_class.new nil).to be_empty
+    end
+
+    it "should be true if empty hash" do
+      expect(described_class.new({})).to be_empty
+    end
+
+    it "should be false if not empty hash" do
+      expect(described_class.new({"script" => "value"})).to_not be_empty
+    end
+
+    it "should to_hash to be empty" do
+      expect(described_class.new(nil).to_hash).to eq({})
+    end
+
   end
 end

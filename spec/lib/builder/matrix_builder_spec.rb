@@ -60,6 +60,37 @@ describe Vx::Builder::MatrixBuilder do
       expect(configurations.map(&:env_matrix)).to eq [["B=backend"], ["B=frontend"], ["B=backend"]]
     end
 
+    it "should generate parallel jobs" do
+      yaml = YAML.load %{
+        env:
+          global:
+          - FOO=BAR
+          matrix:
+          - B=frontend
+          - B=backend
+        rvm:
+        - 2.0
+        - 2.1
+        parallel: 3
+      }
+      configurations = create_matrix(yaml)
+      expect(configurations).to have(4 * 3).items
+      parallel_attrs = [
+        [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.0], 3, 0],
+        [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.0], 3, 1],
+        [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.0], 3, 2],
+        [{"matrix"=>["B=frontend"], "global"=>["FOO=BAR"]}, [2.0], 3, 0],
+        [{"matrix"=>["B=frontend"], "global"=>["FOO=BAR"]}, [2.0], 3, 1],
+        [{"matrix"=>["B=frontend"], "global"=>["FOO=BAR"]}, [2.0], 3, 2],
+        [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.1], 3, 0],
+        [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.1], 3, 1],
+        [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.1], 3, 2],
+        [{"matrix"=>["B=frontend"], "global"=>["FOO=BAR"]}, [2.1], 3, 0],
+        [{"matrix"=>["B=frontend"], "global"=>["FOO=BAR"]}, [2.1], 3, 1],
+        [{"matrix"=>["B=frontend"], "global"=>["FOO=BAR"]}, [2.1], 3, 2]]
+      expect(configurations.map{|i| [i.env.attributes, i.rvm, i.parallel, i.parallel_job_number] }).to eq parallel_attrs
+    end
+
     it "should generate 12 configurations" do
       expect(create_matrix).to have(12).items
     end
@@ -170,8 +201,62 @@ describe Vx::Builder::MatrixBuilder do
 
         it { should eq ['rvm:2.0.0'] }
       end
+
+      context "with parallel" do
+        before do
+          attributes.merge!("parallel" => "3")
+        end
+
+        it "should have parallel key" do
+          expect(matrix.build.map(&:matrix_id)).to eq [
+           "env:BAR=2, parallel:0, rvm:1.8.7, scala:2.10.1",
+           "env:BAR=2, parallel:1, rvm:1.8.7, scala:2.10.1",
+           "env:BAR=2, parallel:2, rvm:1.8.7, scala:2.10.1",
+           "env:FOO=1, parallel:0, rvm:1.8.7, scala:2.10.1",
+           "env:FOO=1, parallel:1, rvm:1.8.7, scala:2.10.1",
+           "env:FOO=1, parallel:2, rvm:1.8.7, scala:2.10.1",
+           "env:BAR=2, parallel:0, rvm:1.8.7, scala:2.9.2",
+           "env:BAR=2, parallel:1, rvm:1.8.7, scala:2.9.2",
+           "env:BAR=2, parallel:2, rvm:1.8.7, scala:2.9.2",
+           "env:FOO=1, parallel:0, rvm:1.8.7, scala:2.9.2",
+           "env:FOO=1, parallel:1, rvm:1.8.7, scala:2.9.2",
+           "env:FOO=1, parallel:2, rvm:1.8.7, scala:2.9.2",
+           "env:BAR=2, parallel:0, rvm:1.9.3, scala:2.10.1",
+           "env:BAR=2, parallel:1, rvm:1.9.3, scala:2.10.1",
+           "env:BAR=2, parallel:2, rvm:1.9.3, scala:2.10.1",
+           "env:FOO=1, parallel:0, rvm:1.9.3, scala:2.10.1",
+           "env:FOO=1, parallel:1, rvm:1.9.3, scala:2.10.1",
+           "env:FOO=1, parallel:2, rvm:1.9.3, scala:2.10.1",
+           "env:BAR=2, parallel:0, rvm:1.9.3, scala:2.9.2",
+           "env:BAR=2, parallel:1, rvm:1.9.3, scala:2.9.2",
+           "env:BAR=2, parallel:2, rvm:1.9.3, scala:2.9.2",
+           "env:FOO=1, parallel:0, rvm:1.9.3, scala:2.9.2",
+           "env:FOO=1, parallel:1, rvm:1.9.3, scala:2.9.2",
+           "env:FOO=1, parallel:2, rvm:1.9.3, scala:2.9.2",
+           "env:BAR=2, parallel:0, rvm:2.0.0, scala:2.10.1",
+           "env:BAR=2, parallel:1, rvm:2.0.0, scala:2.10.1",
+           "env:BAR=2, parallel:2, rvm:2.0.0, scala:2.10.1",
+           "env:FOO=1, parallel:0, rvm:2.0.0, scala:2.10.1",
+           "env:FOO=1, parallel:1, rvm:2.0.0, scala:2.10.1",
+           "env:FOO=1, parallel:2, rvm:2.0.0, scala:2.10.1",
+           "env:BAR=2, parallel:0, rvm:2.0.0, scala:2.9.2",
+           "env:BAR=2, parallel:1, rvm:2.0.0, scala:2.9.2",
+           "env:BAR=2, parallel:2, rvm:2.0.0, scala:2.9.2",
+           "env:FOO=1, parallel:0, rvm:2.0.0, scala:2.9.2",
+           "env:FOO=1, parallel:1, rvm:2.0.0, scala:2.9.2",
+           "env:FOO=1, parallel:2, rvm:2.0.0, scala:2.9.2"
+          ]
+        end
+      end
     end
 
+    context "when build_configuration is empty" do
+      let(:config) {  Vx::Builder::BuildConfiguration.new nil }
+
+      it "should return build configuration" do
+        expect(subject).to eq [config]
+      end
+    end
   end
 
   context "attributes_for_new_confgurations_with_merged_env" do
