@@ -13,7 +13,7 @@ module Vx
 
         def call(env)
           if enabled?(env)
-            #vxvm_install(env, 'ruby', ruby_version(env))
+            vxvm_install(env, 'ruby', ruby_version(env))
 
             do_cache_key(env) do |i|
               i << "rvm-#{ruby_version env}"
@@ -21,8 +21,7 @@ module Vx
             end
 
             do_before_install(env) do |i|
-              i << 'eval "$(rbenv init -)" || true'
-              i << "rbenv shell #{make_rbenv_version_command env}"
+              rbenv_init_shell(env, i)
 
               i << trace_sh_command("export RAILS_ENV=test")
               i << trace_sh_command("export RACK_ENV=test")
@@ -75,8 +74,8 @@ module Vx
         private
 
           def auto_build?(env)
-            # env.source.empty?
-            false # BeBanjo disable auto-build feature
+            return false if env.task.org_key # BeBanjo disable auto-build feature
+            env.source.empty?
           end
 
           def enabled?(env)
@@ -105,6 +104,13 @@ module Vx
                 grep '#{ruby_version env}' |
                 tail -n1)
             }.gsub(/\n/, ' ').gsub(/ +/, ' ').strip
+          end
+
+          def rbenv_init_shell(env, script)
+            if env.task.org_key
+              script << 'eval "$(rbenv init -)" || true'
+              script << "rbenv shell #{make_rbenv_version_command env}"
+            end
           end
       end
     end
