@@ -39,8 +39,10 @@ module Vx
             end
 
             if deploy_key
-              i << upload_sh_command(key_file, deploy_key)
-              i << "chmod 0600 #{key_file}"
+              unless env.organization_key
+                i << upload_sh_command(key_file, deploy_key)
+                i << "chmod 0600 #{key_file}"
+              end
               i << "export VX_PRIVATE_KEY=#{key_file}"
             end
 
