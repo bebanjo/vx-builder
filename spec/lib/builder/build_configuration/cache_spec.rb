@@ -10,25 +10,25 @@ describe Vx::Builder::BuildConfiguration::Cache do
   context "attributes" do
     context "when cache is valid hash" do
       let(:params) { {"directories" => ['/a']} }
-      it { should be_enabled }
+      it { is_expected.to be_enabled }
       its(:directories) { should eq ['/a'] }
     end
 
     context "when cache is invalid hash" do
       let(:params) { {"key" => ['/a']} }
-      it { should be_enabled }
+      it { is_expected.to be_enabled }
       its(:directories) { should eq [] }
     end
 
     context "when is nil" do
       let(:params) { nil }
-      it { should be_enabled }
+      it { is_expected.to be_enabled }
       its(:directories) { should eq [] }
     end
 
     context "when is false value" do
       let(:params) { false }
-      it { should_not be_enabled }
+      it { is_expected.not_to be_enabled }
       its(:directories){ should eq [] }
     end
 
@@ -38,7 +38,7 @@ describe Vx::Builder::BuildConfiguration::Cache do
         "enabled" => false
       } }
 
-      it { should_not be_enabled }
+      it { is_expected.not_to be_enabled }
       its(:directories) { should eq [] }
     end
   end

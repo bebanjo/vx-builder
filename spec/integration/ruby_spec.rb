@@ -3,7 +3,7 @@ require 'fileutils'
 require 'tempfile'
 require 'yaml'
 
-describe "(integration) ruby" do
+describe "(integration) ruby", :type => :request do
   let(:path) { Dir.tmpdir + "/vx-builder-test" }
 
   before do
@@ -44,7 +44,7 @@ describe "(integration) ruby" do
     it "should successfuly generate scripts using language: ruby" do
       c = fixture("integration/ruby/language/config.yml")
       b = build(c)
-      expect(b.scripts).to have(1).item
+      expect(b.scripts.size).to eq(1)
       script = b.scripts[0]
       write_script_to_filter("language/", script)
       expect(script.to_before_script).to eq fixture("integration/ruby/language/before_script.sh")
@@ -55,7 +55,7 @@ describe "(integration) ruby" do
     it "should successfuly generate scripts for deploy" do
       c = fixture("integration/ruby/deploy/config.yml")
       b = build(c)
-      expect(b.scripts).to have(1).item
+      expect(b.scripts.size).to eq(1)
       script = b.scripts[0]
       write_script_to_filter("deploy/", script)
       expect(script.to_before_script).to eq fixture("integration/ruby/deploy/before_script.sh")
@@ -67,7 +67,7 @@ describe "(integration) ruby" do
       c = fixture("integration/ruby/matrix/config.yml")
       b = build(c)
 
-      expect(b.scripts).to have(2).items
+      expect(b.scripts.size).to eq(2)
 
       script = b.scripts[0]
       write_script_to_filter("matrix/0.", script)
@@ -84,7 +84,7 @@ describe "(integration) ruby" do
       expect(script.to_after_script).to  eq fixture("integration/ruby/matrix/1.after_script.sh")
 
       deploy = Vx::Builder.deploy(b.matrix, branch: "master").build
-      expect(deploy).to have(1).item
+      expect(deploy.size).to eq(1)
 
       script = Vx::Builder.script(create(:task), deploy[0])
       write_script_to_filter("matrix/d.", script)

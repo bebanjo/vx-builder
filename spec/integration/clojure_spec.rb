@@ -3,7 +3,7 @@ require 'yaml'
 require 'tmpdir'
 require 'fileutils'
 
-describe "(integration) go" do
+describe "(integration) go", :type => :request do
   let(:path) { Dir.tmpdir + "/vx-builder-test" }
 
   before do

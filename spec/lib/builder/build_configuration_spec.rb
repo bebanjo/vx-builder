@@ -22,7 +22,7 @@ describe Vx::Builder::BuildConfiguration do
   context "to_hash" do
     subject { config.to_hash }
 
-    it { should eq(
+    it { is_expected.to eq(
       {
        "after_success"  => ["echo after success"],
        "before_install" => ["echo before_install"],
@@ -62,17 +62,17 @@ describe Vx::Builder::BuildConfiguration do
 
   context "env" do
     subject { config.env }
-    it { should be }
+    it { is_expected.to be }
   end
 
   context "cache" do
     subject { config.cache }
-    it { should be }
+    it { is_expected.to be }
   end
 
   context "deploy" do
     subject { config.deploy }
-    it { should be }
+    it { is_expected.to be }
   end
 
   context "deploy_modules" do
@@ -82,7 +82,7 @@ describe Vx::Builder::BuildConfiguration do
       ]
     } }
     it "should restore" do
-      expect(config).to have(1).deploy_modules
+      expect(config.deploy_modules.size).to eq(1)
       expect(config).to be_deploy_modules
     end
   end

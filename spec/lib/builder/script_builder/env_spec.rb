@@ -7,7 +7,7 @@ describe Vx::Builder::ScriptBuilder::Env do
   let(:run)    { script.call env }
   subject { run }
 
-  it { should eq 0 }
+  it { is_expected.to eq 0 }
 
   context "run it" do
     let(:command) { create :command_from_env, env: env }

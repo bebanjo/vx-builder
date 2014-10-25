@@ -23,11 +23,11 @@ describe Vx::Builder::MatrixBuilder do
   context "keys" do
     subject { matrix.keys }
 
-    it { should eq %w{ env rvm scala } }
+    it { is_expected.to eq %w{ env rvm scala } }
 
     context "without matrix" do
       let(:attributes) { {} }
-      it { should eq [] }
+      it { is_expected.to eq [] }
     end
   end
 
@@ -55,7 +55,7 @@ describe Vx::Builder::MatrixBuilder do
             env: B=frontend
       }
       configurations = create_matrix(yaml)
-      expect(configurations).to have(3).items
+      expect(configurations.size).to eq(3)
       expect(configurations.map(&:rvm)).to eq [[2.0], [2.0], [2.1]]
       expect(configurations.map(&:env_matrix)).to eq [["B=backend"], ["B=frontend"], ["B=backend"]]
     end
@@ -74,7 +74,7 @@ describe Vx::Builder::MatrixBuilder do
         parallel: 3
       }
       configurations = create_matrix(yaml)
-      expect(configurations).to have(4 * 3).items
+      expect(configurations.size).to eq(4 * 3)
       parallel_attrs = [
         [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.0], 3, 0],
         [{"matrix"=>["B=backend"],  "global"=>["FOO=BAR"]}, [2.0], 3, 1],
@@ -92,7 +92,7 @@ describe Vx::Builder::MatrixBuilder do
     end
 
     it "should generate 12 configurations" do
-      expect(create_matrix).to have(12).items
+      expect(create_matrix.size).to eq(12)
     end
 
     it "should copy script from source" do
@@ -108,12 +108,12 @@ describe Vx::Builder::MatrixBuilder do
     end
 
     it "should assign matrix_attributes" do
-      expect(subject.map(&:matrix_attributes).flatten).to have(12).items
+      expect(subject.map(&:matrix_attributes).flatten.size).to eq(12)
     end
 
     it "should copy vexor attributes to all matrixes" do
       m = create_matrix("vexor" => {"timeout" => 20}, "rvm" => %w{ 2.1 2.0 })
-      expect(m).to have(2).items
+      expect(m.size).to eq(2)
       expect(m.map(&:vexor).map(&:timeout)).to eq [20, 20]
     end
 
@@ -127,7 +127,7 @@ describe Vx::Builder::MatrixBuilder do
       } }
 
       it "should have one configuration" do
-        expect(create_matrix).to have(1).item
+        expect(create_matrix.size).to eq(1)
       end
 
       it "should have valid attributes" do
@@ -155,7 +155,7 @@ describe Vx::Builder::MatrixBuilder do
 
       it "should have one :env and one :rvm key in matrix" do
         keys = subject.map{|c| c.to_hash.select{|k,v| !v.empty? } }
-        expect(keys).to have(1).item
+        expect(keys.size).to eq(1)
 
         expect(keys.first["rvm"]).to eq ['2.0.0']
         expect(keys.first['env']).to eq(
@@ -169,7 +169,7 @@ describe Vx::Builder::MatrixBuilder do
       let(:config) { Vx::Builder::BuildConfiguration.from_file fixture_path("travis_bug_2.yml") }
 
       it "should have services in matrix" do
-        expect(subject).to have(1).item
+        expect(subject.size).to eq(1)
         expect(subject.first.services).to eq ['elasticsearch']
       end
     end
@@ -199,7 +199,7 @@ describe Vx::Builder::MatrixBuilder do
           "rvm" => %w{ 2.0.0 },
         } }
 
-        it { should eq ['rvm:2.0.0'] }
+        it { is_expected.to eq ['rvm:2.0.0'] }
       end
 
       context "with parallel" do
@@ -271,7 +271,9 @@ describe Vx::Builder::MatrixBuilder do
       )
     end
 
-    it { should have(12).items }
+    it 'has 12 items' do
+      expect(subject.size).to eq(12)
+    end
 
     it "should create environments" do
       expect(subject.map{|i| i["env"]["matrix"] }.uniq.sort).to eq([["BAR=1"], ["BAR=2"]])
@@ -282,7 +284,9 @@ describe Vx::Builder::MatrixBuilder do
   context 'attributes_for_new_build_configurations' do
     subject { matrix.attributes_for_new_build_configurations }
 
-    it { should have(12).items }
+    it 'has 12 items' do
+      expect(subject.size).to eq(12)
+    end
 
     its(:first) { should eq("rvm"   => "1.8.7",
                             "scala" => "2.10.1",
@@ -295,7 +299,7 @@ describe Vx::Builder::MatrixBuilder do
   context 'extract_keys_from_builds_configuration' do
     subject { matrix.extract_keys_from_builds_configuration }
     it {
-      should eq [
+      is_expected.to eq [
         ["rvm",   %w{ 1.8.7 1.9.3 2.0.0 }],
         ["scala", %w{ 2.9.2 2.10.1 }],
         ["env",   %w{ FOO=1 BAR=2 }]
@@ -320,7 +324,7 @@ describe Vx::Builder::MatrixBuilder do
       %w{env:FOO=1 rvm:2.0.0 scala:2.9.2},
     ] }
 
-    it { should eq expected }
+    it { is_expected.to eq expected }
 
     context "with empty keys" do
       let(:attributes) { {
@@ -329,7 +333,7 @@ describe Vx::Builder::MatrixBuilder do
         "scala" => %w{ 2.9.2 2.10.1 },
         "java"  => [],
       } }
-      it { should eq expected }
+      it { is_expected.to eq expected }
     end
 
     context "with one key" do
@@ -340,7 +344,7 @@ describe Vx::Builder::MatrixBuilder do
         %w{ rvm:1.9.3 },
         %w{ rvm:2.0.0 }
       ]}
-      it { should eq expected }
+      it { is_expected.to eq expected }
     end
 
     context "without matrix" do
@@ -350,7 +354,7 @@ describe Vx::Builder::MatrixBuilder do
       let(:expected) {[
         %w{ rvm:2.0.0 }
       ]}
-      it { should eq expected }
+      it { is_expected.to eq expected }
     end
 
     def format_values(values)

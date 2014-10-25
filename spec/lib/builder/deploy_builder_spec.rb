@@ -22,7 +22,7 @@ describe Vx::Builder::DeployBuilder do
 
 
   context "just created" do
-    it { should be }
+    it { is_expected.to be }
     its(:base_build_configuration)    { should eq matrix.build_configuration }
     its(:matrix_build_configuration)  { should eq matrix.build.first }
     its(:matrix_build_configuration)  { should be }
@@ -32,14 +32,14 @@ describe Vx::Builder::DeployBuilder do
   context "valid?" do
     it "should be true if deploy key exists and found deploy modules" do
       expect(deploy).to be_valid
-      expect(deploy).to have(1).deploy_modules
+      expect(deploy.deploy_modules.size).to eq(1)
       expect(deploy).to be_deploy
     end
 
     it "should be false if cannot found modules for deploy" do
       deploy = described_class.new matrix, branch: "production"
       expect(deploy).to_not be_valid
-      expect(deploy).to have(0).deploy_modules
+      expect(deploy.deploy_modules.size).to eq(0)
       expect(deploy).to be_deploy
     end
 
@@ -47,7 +47,7 @@ describe Vx::Builder::DeployBuilder do
       matrix = create(:matrix_builder)
       deploy = described_class.new matrix, branch: "master"
       expect(deploy).to_not be_valid
-      expect(deploy).to have(0).deploy_modules
+      expect(deploy.deploy_modules.size).to eq(0)
       expect(deploy).to_not be_deploy
     end
   end
@@ -56,7 +56,7 @@ describe Vx::Builder::DeployBuilder do
 
     it "should create build_configurations with deploy_modules and without deploy" do
       config = deploy.build
-      expect(config).to have(1).item
+      expect(config.size).to eq(1)
       expect(config.first).to_not be_deploy
       expect(config.first).to be_deploy_modules
     end
@@ -69,7 +69,7 @@ describe Vx::Builder::DeployBuilder do
 
       expect(matrix.build).to be_empty
 
-      expect(config).to have(1).item
+      expect(config.size).to eq(1)
       expect(config.first).to_not be_deploy
       expect(config.first).to be_deploy_modules
       expect(config.first.before_install).to eq ["value"]

@@ -8,7 +8,7 @@ describe Vx::Builder::ScriptBuilder::Scala do
   let(:run)    { script.call env }
   subject { run }
 
-  it { should eq env }
+  it { is_expected.to eq env }
 
   context "run it" do
     subject { env }

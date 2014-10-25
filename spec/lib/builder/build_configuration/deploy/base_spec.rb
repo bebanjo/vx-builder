@@ -28,7 +28,9 @@ describe Vx::Builder::BuildConfiguration::Deploy::Base do
 
   context ".loaded" do
     subject { described_class.loaded }
-    it { should have(1).items }
+    it 'has 1 item' do
+      expect(subject.size).to eq(1)
+    end
   end
 
   context ".module_by_key" do

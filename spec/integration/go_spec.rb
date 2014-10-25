@@ -3,7 +3,7 @@ require 'yaml'
 require 'tmpdir'
 require 'fileutils'
 
-describe "(integration) go" do
+describe "(integration) go", :type => :request do
   let(:path) { Dir.tmpdir + "/vx-builder-test" }
 
   before do
@@ -40,7 +40,7 @@ describe "(integration) go" do
     before { write_script_to_filter "language/", b.script }
 
     it "should generate one configuration" do
-      expect(b.matrix.build).to have(1).item
+      expect(b.matrix.build.size).to eq(1)
     end
 
     it "should generate valid scripts" do

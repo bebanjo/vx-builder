@@ -13,7 +13,7 @@ describe Vx::Builder::ScriptBuilder do
 
   context "#image" do
     subject { script.image }
-    it { should eq 'one' }
+    it { is_expected.to eq 'one' }
   end
 
   context "vexor" do
@@ -44,17 +44,17 @@ describe Vx::Builder::ScriptBuilder do
 
   context "#to_before_script" do
     subject { script.to_before_script }
-    it { should be }
+    it { is_expected.to be }
   end
 
   context "#to_after_script" do
     subject { script.to_after_script }
-    it { should be }
+    it { is_expected.to be }
   end
 
   context "#to_script" do
     subject { script.to_script }
-    it { should be }
+    it { is_expected.to be }
   end
 
 end

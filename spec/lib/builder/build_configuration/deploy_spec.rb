@@ -10,17 +10,17 @@ describe Vx::Builder::BuildConfiguration::Deploy do
 
     context "when is hash" do
       let(:params) { { "shell" => '/bin/true' } }
-      it { should eq [{"shell" => "/bin/true"}] }
+      it { is_expected.to eq [{"shell" => "/bin/true"}] }
     end
 
     context "when is array" do
       let(:params) { [{"shell" => '/bin/true'}] }
-      it { should eq [{"shell" => "/bin/true"}] }
+      it { is_expected.to eq [{"shell" => "/bin/true"}] }
     end
 
     context "when is nil" do
       let(:params) { nil }
-      it { should eq [] }
+      it { is_expected.to eq [] }
     end
   end
 
@@ -30,7 +30,7 @@ describe Vx::Builder::BuildConfiguration::Deploy do
 
     context "when deploy branch is empty array" do
       let(:params) { {'shell' => 'true'} }
-      it { should_not be_empty }
+      it { is_expected.not_to be_empty }
     end
 
     context "when deploy branch is array" do
@@ -53,7 +53,7 @@ describe Vx::Builder::BuildConfiguration::Deploy do
     ] }
     it "should build deploy module instances" do
       list = described_class.restore_modules(attrs)
-      expect(list).to have(1).item
+      expect(list.size).to eq(1)
       expect(list.first).to be_an_instance_of(Vx::Builder::BuildConfiguration::Deploy::Shell)
     end
   end

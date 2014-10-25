@@ -7,7 +7,7 @@ describe Vx::Builder::ScriptBuilder::Ruby do
   let(:run)    { script.call env }
   subject { run }
 
-  it { should eq env }
+  it { is_expected.to eq env }
 
   context "run it" do
     let(:command) { create :command_from_env, env: env }
@@ -15,7 +15,7 @@ describe Vx::Builder::ScriptBuilder::Ruby do
 
     context "should be success" do
       before do
-        stub(env.source).install { [] }
+        allow(env.source).to receive(:install).and_return([])
         run
       end
 

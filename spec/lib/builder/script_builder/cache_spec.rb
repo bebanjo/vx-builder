@@ -7,6 +7,6 @@ describe Vx::Builder::ScriptBuilder::Cache do
   let(:run)    { script.call env }
   subject { run }
 
-  it { should eq env }
+  it { is_expected.to eq env }
 
 end
