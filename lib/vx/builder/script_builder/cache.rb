@@ -6,7 +6,7 @@ module Vx
 
         include Helper::Config
 
-        CASHER_URL = "https://raw2.github.com/pacoguzman/casher/master/bin/casher"
+        CASHER_URL = "https://raw.githubusercontent.com/pacoguzman/casher/master/bin/casher"
         CASHER_BIN = "$HOME/.casher/bin/casher"
 
         def call(env)
