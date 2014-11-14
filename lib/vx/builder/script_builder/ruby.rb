@@ -13,6 +13,7 @@ module Vx
 
         def call(env)
           if enabled?(env)
+            organization_key?(env) # Populate the instance variable for a cleaner override on bebanjo apps
 
             do_cache_key(env) do |i|
               ruby_v = ruby_version(env) || 'default'
@@ -31,10 +32,10 @@ module Vx
             end
 
             do_before_install(env) do |i|
-              rbenv_init_shell(env, i)
+              ruby_activate(env, i)
 
               i << trace_sh_command("vx_builder ruby:install #{ruby_version env}")
-              i << "source $(cat .ruby-activate)"
+              i << "source $(cat .ruby-activate)" unless @organization_key
             end
 
             do_announce(env) do |i|
@@ -103,10 +104,22 @@ module Vx
             }.gsub(/\n/, ' ').gsub(/ +/, ' ').strip
           end
 
-          def rbenv_init_shell(env, script)
-            if env.organization_key
+          def organization_key?(env)
+            @organization_key ||= !!env.organization_key
+          end
+
+          def ruby_activate(env, script)
+            if @organization_key
               script << 'eval "$(rbenv init -)" || true'
               script << "rbenv shell #{make_rbenv_version_command env}"
+            end
+          end
+
+          def trace_sh_command(command)
+            if command =~ /vx_builder/ && @organization_key
+              ''
+            else
+              super
             end
           end
       end
