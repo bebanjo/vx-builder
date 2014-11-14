@@ -13,20 +13,28 @@ module Vx
 
         def call(env)
           if enabled?(env)
-            vxvm_install(env, 'ruby', ruby_version(env))
 
             do_cache_key(env) do |i|
-              i << "rvm-#{ruby_version env}"
+              ruby_v = ruby_version(env) || 'default'
+              i << "rvm-#{ruby_v}"
               i << gemfile(env)
+            end
+
+            do_init(env) do |i|
+              if jruby?(env)
+                i << trace_sh_command('export JRUBY_OPTS="-Xcext.enabled=true"')
+              end
+              i << trace_sh_command("export RAILS_ENV=test")
+              i << trace_sh_command("export RACK_ENV=test")
+              i << trace_sh_command("export BUNDLE_GEMFILE=${PWD}/#{gemfile(env)}")
+              i << trace_sh_command('export GEM_HOME=~/.rubygems')
             end
 
             do_before_install(env) do |i|
               rbenv_init_shell(env, i)
 
-              i << trace_sh_command("export RAILS_ENV=test")
-              i << trace_sh_command("export RACK_ENV=test")
-              i << trace_sh_command("export BUNDLE_GEMFILE=${PWD}/#{gemfile(env)}")
-              i << trace_sh_command('export GEM_HOME=~/.rubygems')
+              i << trace_sh_command("vx_builder ruby:install #{ruby_version env}")
+              i << "source $(cat .ruby-activate)"
             end
 
             do_announce(env) do |i|
@@ -40,27 +48,13 @@ module Vx
               i << trace_sh_command("bundle install #{bundler_args}")
             end
 
+            do_before_script(env) do |i|
+              i << trace_sh_command("vx_builder ruby:rails:install")
+            end
+
             do_script(env) do |i|
               script = "if [ -f Rakefile ] ; then \n #{trace_sh_command "bundle exec rake"}\nfi"
               i << script
-            end
-
-            do_cached_directories(env) do |i|
-              i << "~/.rubygems"
-            end
-          end
-
-          if auto_build?(env)
-            vxvm_install(env, 'ruby', DEFAULT_RUBY)
-
-            do_init(env) do |i|
-              src = File.read(File.expand_path("../../../../../bin/vx_ruby_auto_build", __FILE__))
-              i << upload_sh_command("~/vx_ruby_auto_build", src)
-              i << "sudo chmod 0755 ~/vx_ruby_auto_build"
-            end
-
-            do_script(env) do |i|
-              i << "~/vx_ruby_auto_build"
             end
 
             do_cached_directories(env) do |i|
@@ -83,8 +77,12 @@ module Vx
           end
 
           def ruby_version(env)
-            v = env.source.rvm.first || DEFAULT_RUBY
+            v = env.source.rvm.first
             ALIASES[v] || v
+          end
+
+          def jruby?(env)
+            ruby_version(env) =~ /jruby/
           end
 
           def gemfile(env)
