@@ -68,7 +68,6 @@ module Vx
         private
 
           def auto_build?(env)
-            return false if env.organization_key # BeBanjo disable auto-build feature
             env.source.empty?
           end
 
