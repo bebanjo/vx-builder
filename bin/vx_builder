@@ -4,7 +4,7 @@ set -e
 
 # TODO: remove after image updated
 # TODO: create default ruby and bundle links in docker image
-default_bundle="/opt/vexor/packages/ruby-2.0.0-p481/bin/bundle"
+default_bundle="/opt/vexor/packages/ruby-2.0.0-p594/bin/bundle"
 
 ruby_version () {
   local ver
@@ -74,11 +74,12 @@ ruby_rails_gen_database_spec_for_mysql () {
     echo 'create config/database.yml for mysql'
     cat > config/database.yml <<EOL
 test:
-   adapter: mysql2
-   encoding: utf8
-   database: rails_test
-   username: root
-   host: localhost
+   adapter:   mysql2
+   encoding:  utf8
+   database:  rails_test
+   username:  root
+   host:      localhost
+   collation: utf8_general_ci
 EOL
   )
 }
@@ -109,12 +110,20 @@ ruby_rails_db_create () {
 
   test -f db/schema.rb && (
     echo $ bundle exec rake db:schema:load
-    bundle exec rake db:schema:load
+    bundle exec rake db:schema:load > /tmp/schema.log || (
+      echo "The command bundle exec rake db:schema:load failed, log bellow"
+      cat /tmp/schema.log
+      exit 1
+    )
   )
 
   test -d db/migrate && (
     echo $ bundle exec rake db:migrate
-    bundle exec rake db:migrate
+    bundle exec rake db:migrate > /tmp/migrate.log || (
+      echo "The command bundle exec rake db:migrate failed, log bellow"
+      cat /tmp/migrate.log
+      exit 1
+    )
   )
 
   true
