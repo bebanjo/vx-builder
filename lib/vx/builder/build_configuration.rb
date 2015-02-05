@@ -34,7 +34,9 @@ module Vx
         gemfile
         services
         image
+
         bundler_args
+        pip_args
 
         before_install
         install
@@ -47,6 +49,8 @@ module Vx
 
         parallel
         parallel_job_number
+
+        database
       }
 
       class << self
@@ -162,6 +166,10 @@ module Vx
 
       def parallel
         @attributes["parallel"].first.to_i
+      end
+
+      def database?
+        @attributes['database'].first != false
       end
 
       def parallel?

@@ -28,6 +28,7 @@ describe Vx::Builder::BuildConfiguration do
        "before_install" => ["echo before_install"],
        "install"        => ["echo install"],
        "before_script"  => ["echo before_script"],
+       "database"       => [],
        "cache" => {
          "directories"  => ["~/.cache"],
          "enabled"      => true
@@ -40,6 +41,7 @@ describe Vx::Builder::BuildConfiguration do
        "image"          => ["one", "two"],
        "jdk"            => ['openjdk7'],
        "language"       => ["ruby"],
+       "pip_args"       => ["pip args"],
        "python"         => ["2.7"],
        "rust"           => ['0.11.0'],
        "go"             => ['1.2.2'],
@@ -120,4 +122,16 @@ describe Vx::Builder::BuildConfiguration do
     end
 
   end
+
+  context "database?" do
+    let(:content) { {
+      "database" => false
+    } }
+
+    it "should not be" do
+      expect(subject).to_not be_database
+    end
+
+  end
+
 end
