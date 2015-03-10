@@ -40,7 +40,7 @@ eval "$(ssh-agent)" > /dev/null
 ssh-add $VX_PRIVATE_KEY 2> /dev/null
 cd ${VX_ROOT}/code/vexor/vx-test-repo
 echo "download latest version of vxvm"
-curl --tcp-nodelay --retry 3 --fail --silent --show-error -o $VX_ROOT/bin/vxvm https://raw.githubusercontent.com/vexor/vx-packages/master/vxvm
+curl --tcp-nodelay --retry 3 --fail --silent --show-error -o $VX_ROOT/bin/vxvm https://raw.githubusercontent.com/pacoguzman/vx-packages/master/vxvm
 chmod +x $VX_ROOT/bin/vxvm
 
 # before install
